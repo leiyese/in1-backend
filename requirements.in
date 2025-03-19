@@ -4,3 +4,5 @@ flask-sqlalchemy
 black
 flake8
 isort
+dotenv
+flask-mysql-connector
