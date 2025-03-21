@@ -1,13 +1,20 @@
 from flask import Flask
 from flask_cors import CORS
 from config.db import get_database_uri,db
+import os
+
 app = Flask(__name__)
 CORS(app)
 
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "mysecretkey")
+app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY", "myjwtsecret")
 app.config["SQLALCHEMY_DATABASE_URI"] = get_database_uri()
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
+
+app.register_blueprint(auth_routes), url_prefix="/authenticate"
+
 
 @app.route("/ping")
 def ping():
