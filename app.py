@@ -16,6 +16,7 @@ db.init_app(app)
 jwt = JWTManager(app)
 
 app.register_blueprint(auth_routes), url_prefix="/authenticate"
+app.register_blueprint(user_routes), url_prefix="/users"
 
 
 @app.route("/ping")
