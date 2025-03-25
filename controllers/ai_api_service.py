@@ -1,36 +1,37 @@
-import openai
-import google.generativeai as genai
+# import openai
+import google.genai as genai
 import os
-from flask import requests
+from flask import request
 
 
 class Aimodelfactory:
     @staticmethod
     def get_model(model_type):
         if model_type == "gpt-4":
-            return Openai_service()
+            pass
+            # return Openai_service()
         elif model_type == "huggingface":
             return Huggingface_service()
         elif model_type == "gemini":
             return Gemini_service()
         else:
             raise ValueError("Unsupported model type")
-class Openai_service:
-    def __init__(self, model="gpt-4"):
-        self.model = model
-        self.api_key = os.getenv("OPEN_AI_API_KEY")
-        openai.api_key = self.api_key
+# class Openai_service:
+#     def __init__(self, model="gpt-4"):
+#         self.model = model
+#         self.api_key = os.getenv("OPEN_AI_API_KEY")
+#         openai.api_key = self.api_key
 
-    def generate_response(self, system, prompt):
-        try:
-            response = openai.ChatCompletion.create(
-                model=self.model,
-                message = [{"role": "system", "content": system},
-                           {"role": "user", "content": prompt}]
-            )
-            return response["choices"][0]["message"]["content"]
-        except Exception as e:
-            return {"error": str(e)}
+#     def generate_response(self, system, prompt):
+#         try:
+#             response = openai.ChatCompletion.create(
+#                 model=self.model,
+#                 message = [{"role": "system", "content": system},
+#                            {"role": "user", "content": prompt}]
+#             )
+#             return response["choices"][0]["message"]["content"]
+#         except Exception as e:
+#             return {"error": str(e)}
         
 class Gemini_service:
     def __init__(self, model="gemini"):
@@ -51,7 +52,7 @@ class Gemini_service:
             )
             return response.txt
         except Exception as e:
-            return("error": str(e))
+            return{"error": str(e)}
 
 class Huggingface_service:
     def __init__(self, model="huggingface"):
@@ -60,8 +61,11 @@ class Huggingface_service:
         self.headers = {"Authorization": f"Bearer YOU_HF_API_KEY"}
     
     def generate_response(self, system, prompt):
+        """
+        prompt = {"inputs": What is the capital of France?}
+        """
         try:
-            response = requests.post(self.api_key, headers=self.headers, json=prompt )
+            response = request.post(self.api_key, headers=self.headers, json=prompt )
             return response.json
         except Exception as e:
-            return("error": str(e))
+            return{"error": str(e)}

@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonfiy, Blueprint
+from flask import Flask, request, jsonify, Blueprint
 from controllers.ai_api_service import Aimodelfactory
 
 
@@ -14,4 +14,4 @@ def ai_api_route():
     #System role
     system = request.get_json() 
     response = model.generate_response(system, prompt)
-    return jsonfiy({"response": response})
+    return jsonify({"response": response})
