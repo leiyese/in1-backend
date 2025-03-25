@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from config.db import get_database_uri,db
+from routes.ai_api_routes import ai_api_route
 app = Flask(__name__)
 CORS(app)
 
@@ -8,6 +9,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = get_database_uri()
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
+
+app.register_blueprint(ai_api_route,  url_prefix='/api')
 
 @app.route("/ping")
 def ping():
