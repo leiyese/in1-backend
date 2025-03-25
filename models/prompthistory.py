@@ -1,7 +1,7 @@
 from config.db import db
 
-
 #initial structure of the Prompthistory model
+
 class Prompthistory(db.Model):
     __tablename__ = 'prompthistories'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
