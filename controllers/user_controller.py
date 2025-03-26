@@ -85,3 +85,18 @@ def delete_user(user_id, password):
         return "successfully deleted user.", None
     except Exception as e:
         return None, e
+
+
+def update_user_subscription(user_id, subscription_id): # New function to update user subscription, 
+    user, error = get_user_by_id(user_id)
+    if error:
+        return None, error
+    if not user:
+        return None, "User does not exist!"
+    
+    try:
+        user.subscription_id = subscription_id
+        db.session.commit()
+        return user, None
+    except Exception as e:
+        return None, str(e)

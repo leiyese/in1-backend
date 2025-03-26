@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from controllers.user_controller import get_all_users, get_user_by_id, create_user, update_user, delete_user
+from controllers.user_controller import get_all_users, get_user_by_id, create_user, update_user, delete_user, update_user_subscription
 
 
 user_routes = Blueprint("user_routes", __name__)
@@ -58,3 +58,22 @@ def delete_user_route(user_id):
         return jsonify({"Error": error}), 400
     
     return jsonify({"Status": status}), 200
+
+
+@user_routes.route("/update_subscription/<int:user_id>", methods=["PUT"])
+def update_user_subscription_route(user_id):
+    data = request.get_json()
+    subscription_id = data.get("subscription_id")
+    
+    if not subscription_id:
+        return jsonify({"Error": "Missing subscription_id!"}), 400
+    
+    user, error = update_user_subscription(user_id, subscription_id)
+    if error:
+        return jsonify({"Error": error}), 400
+    
+    return jsonify({
+        "message": "Subscription updated successfully!",
+        "user_id": user.id,
+        "subscription_id": user.subscription_id
+    }), 200
