@@ -14,9 +14,15 @@ class Subscription(db.Model):
 class Subscriptions_type(db.Model):
     __tablename__ = 'subscriptions_types'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    type = db.Column(db.Integer, nullable=False) 
+    type = db.Column(db.String, nullable=False)
     price = db.Column(db.Float, nullable=False)
-  
-    
+
     def __repr__(self):
-        return f"<Subscription type {self.name}>"
+        return f"<Subscription type {self.type}>"
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "type": self.type,
+            "price": self.price
+        }
