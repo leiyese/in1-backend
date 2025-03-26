@@ -4,14 +4,17 @@ from controllers.ai_api_service import Aimodelfactory
 
 ai_api_routes = Blueprint("ai_api_routes", __name__)
 
-@ai_api_routes.route('/ai_model', method = ['POST'])
-def ai_api_route():
 
-    model_type = request.get_json()
+@ai_api_routes.route("/ai_model", methods=["POST"])
+def ai_api_call():
+
+    data = request.get_json()
+
+    model_type = data.get("model_type")
     model = Aimodelfactory.get_model(model_type)
-    #User prompt
-    prompt = request.get_json()
-    #System role
-    system = request.get_json() 
+    # User prompt
+    prompt = data.get("prompt")
+    # System role
+    system = data.get("system")
     response = model.generate_response(system, prompt)
     return jsonify({"response": response})
