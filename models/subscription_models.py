@@ -6,7 +6,7 @@ class Subscription(db.Model):
     __tablename__ = 'subscriptions'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     date = db.Column(db.DateTime, nullable=False)
-    subscriptions_type_id = db.Column(db.Integer, db.ForeignKey('subscriptions_types.id'), nullable=False)
+    subscriptions_type_id = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return f"<Subscription {self.id}>"
