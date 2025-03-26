@@ -2,6 +2,7 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from config.db import get_database_uri,db
+from routes.ai_api_routes import ai_api_routes
 import os
 
 app = Flask(__name__)
@@ -17,7 +18,7 @@ jwt = JWTManager(app)
 
 app.register_blueprint(auth_routes), url_prefix="/authenticate"
 app.register_blueprint(user_routes), url_prefix="/users"
-
+app.register_blueprint(ai_api_routes,  url_prefix='/api')
 
 @app.route("/ping")
 def ping():
