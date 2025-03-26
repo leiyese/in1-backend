@@ -7,7 +7,7 @@ class Ai_model(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), nullable=False, unique=True)
     description = db.Column(db.String(255), nullable=False)
-    ai_type_id = db.Column(db.Integer, db.ForeignKey('ai_types.id'), nullable=False)
+    ai_type_id = db.Column(db.Integer, nullable=False)
    
     
 
