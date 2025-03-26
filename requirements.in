@@ -7,3 +7,4 @@ isort
 dotenv
 flask-mysql-connector
 google-genai
+huggingface_hub
