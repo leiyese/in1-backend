@@ -5,27 +5,21 @@ def get_all_subscriptions():
     return Subscription.query.all()
 
 def create_subscription(data):
-    
     new_subscription = Subscription(
-        name=data['name'],
-        price=data['price'],
-        type=data['typen']
+        date=data['date'],
+        subscriptions_type_id=data['subscriptions_type_id']
     )
     db.session.add(new_subscription)
     db.session.commit()
-    return new_subscription
+    return new_subscription, None
 
 def update_subscription(subscription, data):
-    
-    subscription.name = data['name']
-    subscription.price = data['price']
-    subscription.type = data['type']
-    
+    subscription.date = data['date']
+    subscription.subscriptions_type_id = data['subscriptions_type_id']
     db.session.commit()
     return subscription
 
 def delete_subscription(subscription):
-   
     db.session.delete(subscription)
     db.session.commit()
     return subscription
@@ -43,24 +37,24 @@ def get_subscription_type_by_id(subscription_type_id):
     return Subscriptions_type.query.get(subscription_type_id)
 
 def create_subscription_type(data):
-    
-    new_subscription_type = Subscriptions_type(
-        type=data['type'],
-        price=data['price']
-    )
-    db.session.add(new_subscription_type)
-    db.session.commit()
-    return new_subscription_type
+    try:
+        new_subscription_type = Subscriptions_type(
+            type=data['type'],
+            price=data['price']
+        )
+        db.session.add(new_subscription_type)
+        db.session.commit()
+        return new_subscription_type, None
+    except Exception as e:
+        return None, str(e)
 
 def update_subscription_type(subscription_type, data):
-
     subscription_type.type = data['type']
     subscription_type.price = data['price']
     db.session.commit()
     return subscription_type
 
 def delete_subscription_type(subscription_type):
-
     db.session.delete(subscription_type)
     db.session.commit()
     return subscription_type

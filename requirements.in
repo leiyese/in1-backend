@@ -7,3 +7,5 @@ isort
 dotenv
 flask-mysql-connector
 flask-JWT-Extended
+google-genai
+huggingface_hub
