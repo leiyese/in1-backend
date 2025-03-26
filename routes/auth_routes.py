@@ -1,5 +1,8 @@
 from flask import Blueprint, request, jsonify
-from controllers.auth_controller import authenticate_user, validate_access_token
+from controllers.auth_controller import authenticate_user
+from flask_jwt_extended import (jwt_required, get_jwt_identity,set_access_cookies,
+                                set_refresh_cookies, create_access_token,
+                                unset_jwt_cookies)
 
 auth_routes = Blueprint("auth_routes", __name__)
 
@@ -12,24 +15,32 @@ def login():
     if not data or "username" not in data or "password" not in data:
         return jsonify({"Error": "Missing username or password!"}), 400
     
-    user_data, error = authenticate_user(data["username"], data["password"])
+    access_token, refresh_token = authenticate_user(data["username"], data["password"])
     
-    if error:
-        return jsonify({"Error": error}), 400
-    
-    # User_data contains: id, username, access_token
-    return jsonify(user_data), 200
+    resp = jsonify({"login": True})
+    print("login successful")
+    set_access_cookies(resp, access_token)
+    set_refresh_cookies(resp, refresh_token)
+    print("cookies set")
+    return resp, 200
 
-@auth_routes.route("/validate_token", methods=["POST"])
-def validate_token():
-    
-    token = request.headers.get("Authorization")
-    if not token:
-        return jsonify({"Error": "No token provided!"}), 400
-    
-    success, error = validate_access_token(token)
-    
-    if error:
-        return jsonify({"Error": error}), 400
-    
-    return jsonify({"Success": success}), 200
+@auth_routes.route("/logout", methods=["POST"])
+def logout():
+    resp = jsonify({"logout": True})
+    unset_jwt_cookies(resp)
+    return resp, 200
+
+@auth_routes.route("/refresh", methods=["POST"])
+@jwt_required(refresh=True)
+def refresh():
+    current_user = get_jwt_identity()
+    access_token = create_access_token(identity=str(current_user.id))
+    resp = jsonify({"refresh": True})
+    set_access_cookies(resp, access_token)
+    return resp, 200
+
+@auth_routes.route("/protected", methods=["GET"])
+@jwt_required()
+def protected():
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
