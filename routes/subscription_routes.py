@@ -17,7 +17,9 @@ def create_subscription_route():
         "message": "subscriptions created!",
         "subscription_id": new_subscription.id,  # Fixed to use 'id'
         "date": new_subscription.date,
-        "subscriptions_type_id": new_subscription.subscriptions_type_id  # Fixed key
+        "subscriptions_type_id": new_subscription.subscriptions_type_id,
+        "user_id": new_subscription.user_id
+            # Fixed key
     })
     
 @subscription_routes.route("/get_subscriptions", methods=["GET"])

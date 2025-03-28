@@ -7,7 +7,8 @@ def get_all_subscriptions():
 def create_subscription(data):
     new_subscription = Subscription(
         date=data['date'],
-        subscriptions_type_id=data['subscriptions_type_id']
+        subscriptions_type_id=data['subscriptions_type_id'],
+        user_id=data['user_id']
     )
     db.session.add(new_subscription)
     db.session.commit()

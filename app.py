@@ -9,7 +9,7 @@ from routes.ai_api_routes import ai_api_routes
 import os
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
 
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "mysecretkey")
 app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY", "myjwtsecret")
