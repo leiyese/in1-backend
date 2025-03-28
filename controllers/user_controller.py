@@ -20,7 +20,7 @@ def get_user_by_id(user_id):
     except Exception as e:
         return None, e
     
-def create_user(username, password, email, subscription_id):
+def create_user(username, password, email, subscription_id=None):
     
     if not username or not password:
         return None, "Missing username or password!"
@@ -29,7 +29,7 @@ def create_user(username, password, email, subscription_id):
     if existing_user:
         return None, "User already exists!"
     
-    new_user = User(username=username, password_hash=generate_password_hash(password), email=email, subscription_id=subscription_id)
+    new_user = User(username=username, password_hash=generate_password_hash(password), email=email)
     
     db.session.add(new_user)
     db.session.commit()

@@ -20,12 +20,10 @@ def reseed_db():
             db.session.commit()
 
             # Create a test subscription using the basic subscription type
-            test_subscription = Subscription(date="2021-01-01", subscriptions_type_id=basic.id)
-            db.session.add(test_subscription)
-            db.session.commit()
+
 
             # Create a user with the test subscription
-            user = User(username="anton", email="test", password_hash="test", subscription_id=test_subscription.id)
+            user = User(username="anton", email="test", password_hash="test")
             db.session.add(user)
             db.session.commit()
 

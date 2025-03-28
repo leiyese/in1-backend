@@ -26,8 +26,9 @@ def get_user(user_id):
 def create_user_route():
     
     data = request.get_json()
+    subscription_id = data.get("subscription_id")
     
-    new_user, error = create_user(data["username"], data["password_hash"], data["email"], data["subscription_id"])
+    new_user, error = create_user(data["username"], data["password"], data["email"], subscription_id)
     print(new_user, "Created!")
     
     if error:
