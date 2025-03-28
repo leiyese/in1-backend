@@ -51,16 +51,15 @@ Make sure you have the following installed:
 4.	Set up environment variables:
 Create a .env file in the backend folder with the following content (adjust to your needs):
      ```sh
-    FLASK_APP=app.py
-    FLASK_ENV=development
+
     MYSQL_HOST=localhost
     MYSQL_USER=root
     MYSQL_PASSWORD=password
     MYSQL_DB=yourdbname
+    MYSQL_URL = "mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}/{MYSQL_DB}"
     OPENAI_API_KEY = ""
     GEMINI_API_KEY = ""
     HF_API_KEY = ""
-    HF_TOKEN_KEY = ""
     ```
 
 5.	Run the Flask backend:
