@@ -29,7 +29,7 @@ def create_user(username, password, email, subscription_id=None):
     if existing_user:
         return None, "User already exists!"
     
-    new_user = User(username=username, password_hash=generate_password_hash(password), email=email, subscription_id=subscription_id)
+    new_user = User(username=username, password_hash=generate_password_hash(password), email=email)
     
     db.session.add(new_user)
     db.session.commit()
