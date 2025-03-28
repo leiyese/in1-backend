@@ -20,7 +20,7 @@ def get_user_by_id(user_id):
     except Exception as e:
         return None, e
     
-def create_user(username, password, email, subscription_id):
+def create_user(username, password, email, subscription_id=None):
     
     if not username or not password:
         return None, "Missing username or password!"

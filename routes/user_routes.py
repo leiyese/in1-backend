@@ -27,7 +27,7 @@ def create_user_route():
     
     data = request.get_json()
     
-    new_user, error = create_user(data["username"], data["password_hash"], data["email"], data["subscription_id"])
+    new_user, error = create_user(data["username"], data["password_hash"], data["email"])
     print(new_user, "Created!")
     
     if error:
