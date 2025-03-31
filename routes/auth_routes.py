@@ -1,8 +1,9 @@
 from flask import Blueprint, request, jsonify
 from controllers.auth_controller import authenticate_user
-from flask_jwt_extended import (jwt_required, get_jwt_identity,set_access_cookies,
+from flask_jwt_extended import (jwt_required, get_jwt_identity, set_access_cookies,
                                 set_refresh_cookies, create_access_token,
                                 unset_jwt_cookies)
+from models.user import User
 
 auth_routes = Blueprint("auth_routes", __name__)
 
@@ -19,9 +20,11 @@ def login():
     
     resp = jsonify({"login": True})
     print("login successful")
+    
     set_access_cookies(resp, access_token)
     set_refresh_cookies(resp, refresh_token)
     print("cookies set")
+    
     return resp, 200
 
 @auth_routes.route("/logout", methods=["POST"])
@@ -42,5 +45,6 @@ def refresh():
 @auth_routes.route("/protected", methods=["GET"])
 @jwt_required()
 def protected():
-    current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200
+    current_user_id = get_jwt_identity()
+    current_user = User.query.filter_by(id=current_user_id).first()
+    return jsonify(logged_in_as=current_user_id, username=current_user.username, email=current_user.email), 200
