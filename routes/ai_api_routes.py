@@ -11,6 +11,7 @@ def ai_api_call():
     data = request.get_json()
 
     model_type = data.get("model_type")
+    print(f"Received model_type: {model_type}")  # Debugging output
     model = Aimodelfactory.get_model(model_type)
     # User prompt
     prompt = data.get("prompt")

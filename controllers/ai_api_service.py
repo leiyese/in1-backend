@@ -57,8 +57,8 @@ class Gemini_service:
                     top_k=40,
                 ),
             )
-            for chunk in response:
-                print(chunk.text, end="")
+            # for chunk in response:
+            #     print(chunk.text, end="")
             return response.text
 
         except Exception as e:
