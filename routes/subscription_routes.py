@@ -54,9 +54,14 @@ def update_subscription_route(subscription_id):
 def delete_subscription_route(subscription_id):
     
     subscription = get_subscription_by_id(subscription_id)
+    
+    # Check if subscription exists
+    if not subscription:
+        return jsonify({"error": "Subscription not found"}), 404
+        
     deleted_subscription = delete_subscription(subscription)
     
-    return jsonify(deleted_subscription.serialize())
+    return jsonify(deleted_subscription)
 
 
 #CRUD ROUTES for subscription_type
@@ -116,3 +121,33 @@ def delete_subscription_type_route(subscription_type_id):
     
     deleted_subscription_type = delete_subscription_type(subscription_type)
     return jsonify(deleted_subscription_type.serialize())
+
+
+@subscription_routes.route("/create_subscription_and_update_user", methods=["POST"])
+def create_subscription_and_update_user_route():
+    data = request.get_json()
+    
+    # Use the combined function that handles both operations
+    new_subscription, error = create_subscription_and_update_user(data)
+    
+    if error:
+        return jsonify({"error": error}), 400
+        
+    return jsonify({
+        "message": "Subscription created and user updated!",
+        "subscription_id": new_subscription.id,
+        "date": new_subscription.date,
+        "subscriptions_type_id": new_subscription.subscriptions_type_id,
+        "user_id": new_subscription.user_id
+    }), 201
+
+
+@subscription_routes.route("/get_user_subscription/<user_id>", methods=["GET"])
+def get_user_subscription(user_id):
+    # Find subscription by user_id
+    subscription = Subscription.query.filter_by(user_id=user_id).first()
+    
+    if not subscription:
+        return jsonify({"message": "No subscription found for this user"}), 404
+    
+    return jsonify(subscription.serialize())
