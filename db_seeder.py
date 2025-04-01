@@ -8,7 +8,7 @@ from models.user import User
 def reseed_db():
             
             # Remove all existing entries in the proper order to avoid foreign key issues
-            User.query.delete()
+            
             Subscription.query.delete()
             Subscriptions_type.query.delete()
             db.session.commit()
@@ -22,10 +22,8 @@ def reseed_db():
             # Create a test subscription using the basic subscription type
 
 
-            # Create a user with the test subscription
-            user = User(username="anton", email="test", password_hash="test")
-            db.session.add(user)
-            db.session.commit()
+
+
 
             print("Database seeded successfully!")
 
