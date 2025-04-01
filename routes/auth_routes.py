@@ -31,6 +31,7 @@ def login():
 def logout():
     resp = jsonify({"logout": True})
     unset_jwt_cookies(resp)
+    print("cookies unset")
     return resp, 200
 
 @auth_routes.route("/refresh", methods=["POST"])

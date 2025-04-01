@@ -16,7 +16,8 @@ class Subscription(db.Model):
         return {
             "id": self.id,
             "date": self.date,
-            "subscriptions_type_id": self.subscriptions_type_id
+            "subscriptions_type_id": self.subscriptions_type_id,
+            "user_id": self.user_id
         }
 
 class Subscriptions_type(db.Model):
