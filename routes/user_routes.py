@@ -38,14 +38,25 @@ def create_user_route():
 
 @user_routes.route("/update/<int:user_id>", methods=["PUT"])
 def update_user_route(user_id):
-    
+    print("Received update request for user:", user_id)  # Debug-utskrift
     update_data = request.get_json()
+    print("Update data received:", update_data)  # Debug-utskrift
+    
+    if not update_data:
+        print("No update data provided")  # Debug-utskrift
+        return jsonify({"Error": "No update data provided"}), 400
+    
+    if "password" in update_data:
+        print("Password field found in update data, removing it")  # Debug-utskrift
+        del update_data["password"]
     
     status, error = update_user(user_id, update_data)
     
     if error:
+        print("Error updating user:", error)  # Debug-utskrift
         return jsonify({"Error": error}), 400
     
+    print("Update successful:", status)  # Debug-utskrift
     return jsonify({"Status": status}), 200
 
 @user_routes.route("/delete/<int:user_id>", methods=["DELETE"])

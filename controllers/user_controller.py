@@ -37,31 +37,44 @@ def create_user(username, password, email, subscription_id=None):
     return new_user, None
 
 def update_user(user_id, update_data):
+    print("Updating user with data:", update_data)  # Debug-utskrift
+    
+    if not update_data:
+        return None, "No update data provided!"
     
     user, error = get_user_by_id(user_id)
     
     if error:
+        print("Error getting user:", error)  # Debug-utskrift
         return None, error
     if not user:
+        print("User not found")  # Debug-utskrift
         return None, "User does not exist!"
     
     try:
-        if "password" not in update_data:
-            return None, "Missing password!"
-        if not check_password_hash(user.password_hash, update_data["password"]):
-            return None, "Incorrect password!"
+        # Uppdatera användarnamn om det finns
         if "username" in update_data:
+            print("Updating username to:", update_data["username"])  # Debug-utskrift
+            # Kontrollera om användarnamnet redan finns
+            existing_user = User.query.filter_by(username=update_data["username"]).first()
+            if existing_user and existing_user.id != user_id:
+                return None, "Username already exists!"
             user.username = update_data["username"]
-        if "new_password" in update_data:
-            user.password_hash = generate_password_hash(update_data["new_password"])
+            
+        # Uppdatera e-post om det finns
         if "email" in update_data:
+            print("Updating email to:", update_data["email"])  # Debug-utskrift
             user.email = update_data["email"]
+            
+        # Om det finns andra fält i update_data som inte är username eller email, ignorera dem
         
         db.session.commit()
-        
-        return "status: success", None
+        print("Update successful")  # Debug-utskrift
+        return "Profile updated successfully", None
     except Exception as e:
-        return None, e
+        db.session.rollback()
+        print("Error updating user:", str(e))  # Debug-utskrift
+        return None, str(e)
     
 def delete_user(user_id, password):
     

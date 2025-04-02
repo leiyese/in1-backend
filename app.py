@@ -10,7 +10,7 @@ from routes.ai_api_routes import ai_api_routes
 import os
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
+CORS(app, origins=["http://localhost:5173", "http://localhost:5174"], supports_credentials=True)
 
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "mysecretkey")
 app.config["SQLALCHEMY_DATABASE_URI"] = get_database_uri()
