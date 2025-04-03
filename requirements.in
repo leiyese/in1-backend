@@ -10,4 +10,6 @@ flask-JWT-Extended
 google-genai
 huggingface_hub
 cryptography
-pymsql
+pymysql
+#DEV test requirements
+pytest
