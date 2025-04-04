@@ -19,6 +19,49 @@ Our project is an AI-powered application that gathers multiple AI models under o
 - Integrates with multiple third-party AI APIs (e.g., OpenAI, Gemini)
 - Simple, user-friendly experience for small businesses to access powerful AI tools
 
+
+## Design System
+
+### Color Palette
+- **Primary**: Blues (#3498db, #71aeeb) - Foundation of the interface
+- **Secondary**: Purple (#9b59b6) - Used for contrast and accent elements
+- **Feedback**: Green (#2ecc71) for success, Red (#e74c3c) for alerts/errors
+- **Text**: Dark (#2c3e50) to medium (#5a6577) hierarchy for readability
+
+### Design Elements
+- **Minimalist Approach**: Clean layouts with purposeful white space
+- **Card-Based UI**: Information organized in consistent card components
+- **Subtle Gradients**: Used for depth and visual interest
+- **Typography**: Sans-serif system fonts optimized for legibility
+- **Rounded Corners**: Consistent border-radius for a friendly feel
+
+### Responsive Design
+- Mobile-first approach with strategic element reorganization
+- Touch-optimized controls on smaller screens
+- Single-column layouts on mobile, multi-column on larger screens
+
+
+## Database Structure
+
+Our application uses a relational database with the following key tables:
+
+### Tables & Relationships
+
+**Users**
+- Stores user credentials and profile information
+- Has a one-to-one relationship with an active subscription
+
+**Subscriptions**
+- Records subscription details including purchase date
+- Links to both users and subscription types
+- Each subscription belongs to exactly one user
+
+**Subscription Types**
+- Defines available subscription plans and their pricing
+- Multiple subscriptions can reference the same subscription type
+
+This database design supports user management, subscription tracking, and subscription-based access control throughout the application.
+
 ## Installation
 
 ### Prerequisites
@@ -83,6 +126,26 @@ Create a .env file in the backend folder with the following content (adjust to y
     ```sh
     npm run dev
     ```
+
+## Cypress Testing for IN1 Frontend
+
+This directory contains end-to-end tests using Cypress.
+
+### Test Structure
+
+- **Login & Authentication**: login.cy.js
+- **Subscription Management**: subscription.cy.js
+- (Other test categories)
+
+### Running Tests
+
+- Local development: `npm run cypress:open`
+- Headless mode: `npm run cypress:run`
+- CI/CD: Automatically runs on push to main/develop
+
+### Mock Strategy
+
+Tests use API mocking to isolate frontend testing from backend dependencies
 
 
 ## Version Control
