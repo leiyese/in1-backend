@@ -7,20 +7,15 @@ def get_all_subscriptions():
     return Subscription.query.all()
 
 def create_subscription(data):
-    print("recieved data:", data)
-    # Get current date with time set to midnight
     today = datetime.combine(datetime.now().date(), time())
     
-    # Check if user already has a subscription
     existing_subscription = Subscription.query.filter_by(user_id=data['user_id']).first()
     
     if existing_subscription:
-        # Update existing subscription instead of creating a new one
         existing_subscription.subscriptions_type_id = data['subscriptions_type_id']
         db.session.commit()
         return existing_subscription, None
     else:
-        # Create new subscription if user doesn't have one
         new_subscription = Subscription(
             date=data.get('date', today),
             subscriptions_type_id=data['subscriptions_type_id'],
@@ -36,14 +31,11 @@ def update_subscription(subscription, data):
     return subscription
 
 def delete_subscription(subscription):
-    # First get the user associated with this subscription
     user = User.query.filter_by(subscription_id=subscription.id).first()
     
-    # If there's a user with this subscription, clear their subscription_id
     if user:
         user.subscription_id = None
         
-    # Now delete the subscription
     db.session.delete(subscription)
     db.session.commit()
     
@@ -53,16 +45,13 @@ def delete_subscription(subscription):
     }
 
 def get_subscription_by_id(subscription_id):
-    return Subscription.query.get(subscription_id)
-
-
-#CRUD operations for the Subscriptions_type model
+    return db.session.get(Subscription, subscription_id)
 
 def get_all_subscription_types():
     return Subscriptions_type.query.all()
 
 def get_subscription_type_by_id(subscription_type_id):
-    return Subscriptions_type.query.get(subscription_type_id)
+    return db.session.get(Subscriptions_type, subscription_type_id)
 
 def create_subscription_type(data):
     try:
@@ -87,25 +76,20 @@ def delete_subscription_type(subscription_type):
     db.session.commit()
     return subscription_type
 
-# Update the create_subscription_and_update_user function
 def create_subscription_and_update_user(data):
-    # Check if user already has a subscription
     existing_subscription = Subscription.query.filter_by(user_id=data['user_id']).first()
     
     if existing_subscription:
-        # Update existing subscription
         existing_subscription.subscriptions_type_id = data['subscriptions_type_id']
         db.session.commit()
         
-        # Make sure user record points to this subscription
-        user = User.query.get(data['user_id'])
+        user = db.session.get(User, data['user_id'])
         if user:
             user.subscription_id = existing_subscription.id
             db.session.commit()
             
         return existing_subscription, None
     else:
-        # Create new subscription
         today = datetime.combine(datetime.now().date(), time())
         new_subscription = Subscription(
             date=data.get('date', today),
@@ -115,9 +99,8 @@ def create_subscription_and_update_user(data):
         db.session.add(new_subscription)
         db.session.commit()
         
-        # Update user
         user_id = data['user_id']
-        user = User.query.get(user_id)
+        user = db.session.get(User, user_id)
         if user:
             user.subscription_id = new_subscription.id
             db.session.commit()

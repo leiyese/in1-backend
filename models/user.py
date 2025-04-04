@@ -7,15 +7,12 @@ class User(db.Model):
     username = db.Column(db.String(50), nullable=False, unique=True)
     email = db.Column(db.String(100), nullable=False, unique=True)
     password_hash = db.Column(db.String(255), nullable=False)
-    
-    # Foreign key to link to the subscription table
     subscription_id = db.Column(db.Integer, db.ForeignKey('subscriptions.id'), nullable=True)
     
-    # Define a one-to-one relationship with Subscription
-    # This replaces the current subscriptions relationship
+
     subscription = db.relationship('Subscription', 
                                   foreign_keys=[subscription_id],
-                                  uselist=False,  # This makes it a one-to-one relationship
+                                  uselist=False, 
                                   backref=db.backref('user', uselist=False),
                                   lazy=True)
 
