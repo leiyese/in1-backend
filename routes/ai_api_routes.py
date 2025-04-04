@@ -10,12 +10,16 @@ def ai_api_call():
 
     data = request.get_json()
 
+    if not data:
+        return jsonify({"error": "Request body must be JSON"}), 400
+    if "model_type" not in data or not data["model_type"]:
+        return jsonify({"error": "Missing required field: 'model_type'"}), 400
+    if "prompt" not in data:
+        return jsonify({"error": "Missing required field: 'prompt'"}), 400
+
     model_type = data.get("model_type")
-    print(f"Received model_type: {model_type}")  # Debugging output
     model = Aimodelfactory.get_model(model_type)
-    # User prompt
     prompt = data.get("prompt")
-    # System role
     system = data.get("system")
     response = model.generate_response(system, prompt)
     return jsonify({"response": response})
